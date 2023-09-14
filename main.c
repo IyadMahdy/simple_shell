@@ -1,33 +1,45 @@
 #include "main.h"
 
 /**
+ * main - Shell Program
+ * @argc: ...
+ * @argv: ...
+ * @env: ...
+ *
+ * Return: 0
  */
 int main(int argc, char **argv, char **env)
 {
-	char *buff = NULL;
-	size_t n = 0, i;
+	char *input_str = NULL;
+	size_t n = 0;
 	char *args[100];
 	pid_t pid;
 
 	while (1)
 	{
-		printf("$ ");
-		if (getline(&buff, &n, stdin) == -1)
+		if (isatty(0))
+			printf("$ ");
+		if (getline(&input_str, &n, stdin) == -1)
 			break;
-		args[0] = strtok(buff, "\n");
-		for (i = 1; i < 100; i++)
+		get_toks(input_str, args, " \n");
+		if (!strcmp(input_str, "env"))
 		{
-			args[i] = strtok(NULL, "\n");
-			if (!args[i])
-				break;
+			print_env();
+			continue;
 		}
+		if (exit_handler(args, argv[0]) == -1)
+			continue;
 
+		if (access(args[0], X_OK) == -1)
+		{
+			fprintf(stderr, "%s: No such file or directory\n", argv[0]);
+			continue;
+		}
 		pid = fork();
 		if (pid == 0)
 		{
 			if (execve(args[0], args, env) == -1)
-				fprintf(stderr, "%s: No such file or directory\n", argv[0]);
-			exit(EXIT_FAILURE);
+				perror("execve");
 		}
 		else
 		{
@@ -35,6 +47,7 @@ int main(int argc, char **argv, char **env)
 		}
 	}
 
-	printf("\n");
+	if (isatty(0))
+		printf("\n");
 	return (0);
 }
