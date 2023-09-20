@@ -18,20 +18,10 @@ int main(int argc, char **argv, char **env)
 	(void) argc;
 	while (1)
 	{
-		if (isatty(0))
-			printf("(SHELL)$ ");
+		printf("(SHELL)$ ");
 		if (getline(&input_str, &n, stdin) == -1)
 			break;
 		get_toks(input_str, args, " \n");
-		if (!strcmp(input_str, "env"))
-		{
-			print_env();
-			continue;
-		}
-		if (!strcmp(input_str, "exit"))
-			break;
-		if (exit_handler(args, argv[0], &input_str) == -1)
-			continue;
 		if (access(args[0], X_OK) == -1)
 		{
 			fprintf(stderr, "%s: No such file or directory\n", argv[0]);
@@ -47,7 +37,5 @@ int main(int argc, char **argv, char **env)
 			wait(NULL);
 	}
 	free(input_str);
-	if (!isatty(0))
-		printf("\n");
 	return (0);
 }
