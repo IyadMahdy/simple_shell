@@ -12,6 +12,9 @@ int main(int argc, char **argv, char **env)
 {
 	char *input_str = NULL;
 	size_t n = 0;
+	char *args[2];
+	pid_t pid;
+
 
 	(void) argc;
 	(void) argv;
@@ -27,8 +30,16 @@ int main(int argc, char **argv, char **env)
 			perror(argv[0]);
 			continue;
 		}
-
-
+		args[0] = input_str;
+		args[1] = NULL;
+		pid = fork();
+		if (pid == 0)
+		{
+			execve(input_str, args, env);
+			perror("Execve");
+		}
+		else
+			wait(NULL);
 	}
 	free(input_str);
 	return (0);
