@@ -5,6 +5,7 @@
  * @args: Array of strings where the exit
  * call is stored with it's arguments
  * @pname: Program name incase we show an error
+ * @allocated: Allocated buffer
  *
  * Return: 0 if exit wasnt called
  * -1 if called and didnt work
