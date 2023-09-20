@@ -12,35 +12,42 @@ int main(int argc, char **argv, char **env)
 {
 	char *input_str = NULL;
 	size_t n = 0;
-	char *args[2];
+	char *args[100];
 	pid_t pid;
 
-
 	(void) argc;
-	(void) argv;
-	(void) env;
 	while (1)
 	{
-		printf("(SHELL)$ ");
+		if (isatty(0))
+			printf("(SHELL)$ ");
 		if (getline(&input_str, &n, stdin) == -1)
 			break;
-		input_str = strtok(input_str, "\n");
-		if (access(input_str, X_OK) == -1)
+		get_toks(input_str, args, " \n");
+		if (!strcmp(input_str, "env"))
 		{
-			perror(argv[0]);
+			print_env();
 			continue;
 		}
-		args[0] = input_str;
-		args[1] = NULL;
+		if (!strcmp(input_str, "exit"))
+			break;
+		if (exit_handler(args, argv[0], &input_str) == -1)
+			continue;
+		if (access(args[0], X_OK) == -1)
+		{
+			fprintf(stderr, "%s: No such file or directory\n", argv[0]);
+			continue;
+		}
 		pid = fork();
 		if (pid == 0)
 		{
-			execve(input_str, args, env);
-			perror("Execve");
+			if (execve(args[0], args, env) == -1)
+				perror("execve");
 		}
 		else
 			wait(NULL);
 	}
 	free(input_str);
+	if (isatty(0))
+		printf("\n");
 	return (0);
 }
