@@ -30,7 +30,12 @@ int exit_handler(char **args, char *pname, char **allocated)
 		exit_code = atoi(args[1]);
 	}
 	else
-		exit_code = (int) errno;
+	{
+		if (errno)
+			exit_code = errno;
+		else
+			exit_code = 0;
+	}
 
 	free(*allocated);
 	exit(exit_code);
