@@ -15,6 +15,8 @@ int main(int argc, char **argv, char **env)
 	char *args[100];
 	pid_t pid;
 
+	(void) argc;
+
 	while (1)
 	{
 		if (isatty(0))
