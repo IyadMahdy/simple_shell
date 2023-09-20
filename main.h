@@ -14,7 +14,7 @@
 extern char **environ;
 
 void get_toks(char *str, char **arr, char *delim);
-int exit_handler(char **args, char *pname);
+int exit_handler(char **args, char *pname, char **allocated);
 void print_env(void);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 

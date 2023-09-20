@@ -28,7 +28,7 @@ int main(int argc, char **argv, char **env)
 			print_env();
 			continue;
 		}
-		if (exit_handler(args, argv[0]) == -1)
+		if (exit_handler(args, argv[0], &input_str) == -1)
 			continue;
 		if (access(args[0], X_OK) == -1)
 		{
@@ -44,7 +44,7 @@ int main(int argc, char **argv, char **env)
 		else
 			wait(NULL);
 	}
-
+	free(input_str);
 	if (isatty(0))
 		printf("\n");
 	return (0);

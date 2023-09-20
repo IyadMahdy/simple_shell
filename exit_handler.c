@@ -9,7 +9,7 @@
  * Return: 0 if exit wasnt called
  * -1 if called and didnt work
  */
-int exit_handler(char **args, char *pname)
+int exit_handler(char **args, char *pname, char **allocated)
 {
 	int i, exit_code;
 
@@ -17,7 +17,10 @@ int exit_handler(char **args, char *pname)
 		return (0);
 
 	if (!args[1])
+	{
+		free(*allocated);
 		exit(0);
+	}
 
 	for (i = 0; args[1][i]; i++)
 	{
@@ -28,6 +31,7 @@ int exit_handler(char **args, char *pname)
 		}
 	}
 
+	free(allocated);
 	exit_code = atoi(args[1]);
 	exit(exit_code);
 }
