@@ -16,6 +16,7 @@ int exit_handler(char **args, char *pname, char **allocated)
 
 	if (strcmp(args[0], "exit"))
 		return (0);
+	exit(0);
 
 	if (args[1])
 	{
