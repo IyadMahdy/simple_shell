@@ -23,7 +23,12 @@ int main(int argc, char **argv, char **env)
 			break;
 		input_str = strtok(input_str, "\n");
 		if (access(input_str, X_OK) == -1)
-			fprintf(stderr, "No such file or directory\n");
+		{
+			perror(argv[0]);
+			continue;
+		}
+
+
 	}
 	free(input_str);
 	return (0);
