@@ -16,7 +16,6 @@ int main(int argc, char **argv, char **env)
 	pid_t pid;
 
 	(void) argc;
-
 	while (1)
 	{
 		if (isatty(0))
@@ -31,7 +30,6 @@ int main(int argc, char **argv, char **env)
 		}
 		if (exit_handler(args, argv[0]) == -1)
 			continue;
-
 		if (access(args[0], X_OK) == -1)
 		{
 			fprintf(stderr, "%s: No such file or directory\n", argv[0]);
@@ -44,9 +42,7 @@ int main(int argc, char **argv, char **env)
 				perror("execve");
 		}
 		else
-		{
 			wait(NULL);
-		}
 	}
 
 	if (isatty(0))
