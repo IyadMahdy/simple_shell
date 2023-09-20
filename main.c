@@ -19,10 +19,12 @@ int main(int argc, char **argv, char **env)
 	while (1)
 	{
 		if (isatty(0))
-			printf("$ ");
+			printf("(SHELL)$ ");
 		if (getline(&input_str, &n, stdin) == -1)
 			break;
 		get_toks(input_str, args, " \n");
+		if (!strcmp(args[0], "No command"))
+			continue;
 		if (!strcmp(input_str, "env"))
 		{
 			print_env();

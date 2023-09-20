@@ -19,4 +19,7 @@ void get_toks(char *str, char **arr, char *delim)
 		if (!arr[i])
 			return;
 	}
+
+	if (arr[0] == NULL)
+		arr[0] = "No Command";
 }

@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <sys/wait.h>
+#include <errno.h>
 
 extern char **environ;
 

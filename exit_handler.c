@@ -17,22 +17,21 @@ int exit_handler(char **args, char *pname, char **allocated)
 	if (strcmp(args[0], "exit"))
 		return (0);
 
-	if (!args[1])
+	if (args[1])
 	{
-		free(*allocated);
-		exit(0);
-	}
-
-	for (i = 0; args[1][i]; i++)
-	{
-		if (!isdigit(args[1][i]))
+		for (i = 0; args[1][i]; i++)
 		{
-			fprintf(stderr, "%s: Illegal number: %s\n", pname, args[1]);
-			return (-1);
+			if (!isdigit(args[1][i]))
+			{
+				fprintf(stderr, "%s: Illegal number: %s\n", pname, args[1]);
+				return (-1);
+			}
 		}
+		exit_code = atoi(args[1]);
 	}
+	else
+		exit_code = (int) errno;
 
-	free(allocated);
-	exit_code = atoi(args[1]);
+	free(*allocated);
 	exit(exit_code);
 }
